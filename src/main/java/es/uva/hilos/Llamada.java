@@ -9,4 +9,12 @@ public class Llamada {
 		this.duracion = duracion;
 		this.id = id;
 	}
+
+	public int getDuracion(){
+		return duracion;
+	}
+
+	public int getId(){
+		return id;
+	}
 }

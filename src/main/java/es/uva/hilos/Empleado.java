@@ -14,7 +14,7 @@ public class Empleado {
 	private final String nombre;
 
 	// Un logger es una mejor manera de hacer prints!
-	private final static Logger logger = LoggerFactory.gerLogger(Empleado.class);
+	private final static Logger logger = LoggerFactory.getLogger(Empleado.class);
 
 	public Empleado(int prioridad, String nombre){
 		this.prioridad = prioridad;
@@ -26,10 +26,10 @@ public class Empleado {
 	}
 
 	// Simulamos que atender la llamad es algo esperando un tiempo
-	public atenderLlamada(Llamada llamada){
-		logger.info(nombre + "está atendiendo la llamada " + llamada.getId() + "...");
+	public void atenderLlamada(Llamada llamada) throws InterruptedException{
+		logger.info(nombre + " está atendiendo la llamada " + llamada.getId() + "...");
 		TimeUnit.SECONDS.sleep(llamada.getDuracion());
-		logger.info(nombre + "atendió la llamada "+ llamada.getId());
+		logger.info(nombre + " atendió la llamada "+ llamada.getId());
 	}
 
 }

@@ -1,9 +1,10 @@
-package es.uva.hilos.messenger;
+package es.uva.hilos;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.org.lidalia.slf4jtest.LoggingEvent;
 import uk.org.lidalia.slf4jtest.TestLogger;
+
 import uk.org.lidalia.slf4jtest.TestLoggerFactory;
 
 import java.util.List;
@@ -11,16 +12,15 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.org.lidalia.slf4jtest.LoggingEvent.info;
 
-public class LoggerExampleTest {
+public class CentralitaTest {
 
     private TestLogger testLogger;
     private Centralita centralita;
 
     @BeforeEach
     public void setUp() {
-        testLogger = TestLoggerFactory.getTestLogger(LoggerExample.class);
+        testLogger = TestLoggerFactory.getTestLogger(Empleado.class);
         centralita = new Centralita();
     }
 
@@ -33,7 +33,7 @@ public class LoggerExampleTest {
 
         TimeUnit.SECONDS.sleep(2); // Damos tiempo para que la llamada se procese
 
-        List<LoggingEvent> events = testLogger.getLoggingEvents();
+        List<LoggingEvent> events = testLogger.getAllLoggingEvents();
         assertEquals(2, events.size());
 
         // Verificamos que los logs existen, pero no en un orden específico
@@ -51,7 +51,7 @@ public class LoggerExampleTest {
 
         TimeUnit.SECONDS.sleep(2); // Damos tiempo para que la llamada se procese
 
-        List<LoggingEvent> events = testLogger.getLoggingEvents();
+        List<LoggingEvent> events = testLogger.getAllLoggingEvents();
         assertEquals(2, events.size());
 
         // Verificamos que los logs existen sin exigir un orden específico
@@ -70,7 +70,7 @@ public class LoggerExampleTest {
 
         TimeUnit.SECONDS.sleep(3); // Esperamos que ambas llamadas se completen
 
-        List<LoggingEvent> events = testLogger.getLoggingEvents();
+        List<LoggingEvent> events = testLogger.getAllLoggingEvents();
         assertEquals(4, events.size()); // Dos logs por cada llamada
 
         // Verificamos que los logs existen, no importa el orden
@@ -94,7 +94,7 @@ public class LoggerExampleTest {
 
         TimeUnit.SECONDS.sleep(6); // Esperamos lo suficiente para que la tercera llamada se procese
 
-        List<LoggingEvent> events = testLogger.getLoggingEvents();
+        List<LoggingEvent> events = testLogger.getAllLoggingEvents();
         assertEquals(6, events.size());
 
         // Verificamos que los logs existen sin orden estricto
@@ -110,8 +110,9 @@ public class LoggerExampleTest {
 
         centralita.atenderLlamada(new Llamada(0, 108)); // La llamada no debería bloquearse
 
+        TimeUnit.SECONDS.sleep(1); // Esperamos lo suficiente para que la tercera llamada se procese
 
-        List<LoggingEvent> events = testLogger.getLoggingEvents();
+        List<LoggingEvent> events = testLogger.getAllLoggingEvents();
         assertEquals(2, events.size());
         assertTrue(events.stream().anyMatch(event -> event.getMessage().equals("Alberto atendió la llamada 108")));
     }
