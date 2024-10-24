@@ -8,11 +8,14 @@ Además, aprenderás a utilizar un **logger** para rastrear el flujo de eventos 
 
 ## Objetivos
 
-- Implementar y manejar hilos en Java para realizar tareas asíncronas.
-- Utilizar un sistema de **prioridades** para gestionar la asignación de tareas (llamadas) entre diferentes empleados.
-- Utilizar el **logging** para rastrear eventos concurrentes.
-- Realizar **pruebas automatizadas** para validar que los hilos se comportan como se espera en un entorno multihilo.
-  
+Completar los bloques de código comentados con TODO para que pasen todos los tests.
+
+### Objetivos extra
+
+- Utilizar ExecutorService para reutilizar hilos
+- Generar 2 casos de test más
+- Gestionar las llamadas no asignadas en una cola
+
 ## Clases principales
 
 ### 1. **Empleado**
