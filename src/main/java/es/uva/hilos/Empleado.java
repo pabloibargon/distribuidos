@@ -21,6 +21,10 @@ public class Empleado {
 		this.nombre = nombre;
 	}
 
+	public int getPrioridad() {
+		return prioridad;
+	}
+
 	// Simulamos que atender la llamad es algo esperando un tiempo
 	public atenderLlamada(Llamada llamada){
 		logger.info(nombre + "está atendiendo la llamada " + llamada.getId() + "...");
