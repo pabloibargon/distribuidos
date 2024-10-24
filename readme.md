@@ -14,6 +14,8 @@ Completar los bloques de código comentados con TODO para que pasen todos los te
 
 - Utilizar ExecutorService para reutilizar hilos
 - Generar 2 casos de test más
+- Generar al menos un log de nivel debug, warning e info en otros puntos del código
+    [Con sentido]
 - Gestionar las llamadas no asignadas en una cola
 
 ## Clases principales
