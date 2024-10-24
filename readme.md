@@ -1,72 +1,75 @@
-## Ejemplos de hilos de las diapositivas
+# Ejercicio de Gestión de Llamadas con Hilos en Java
 
-[Hay métodos para hacer todos estos pasos desde todos IDEs]
+## Descripción
 
-1. Clonamos el repositorio
+Este ejercicio tiene como objetivo familiarizarte con la programación concurrente en Java utilizando **hilos** (threads). Simularás el funcionamiento de una centralita telefónica en la que varios **empleados** atienden llamadas de manera asíncrona. Las llamadas se asignarán a los empleados en función de su **prioridad**.
 
-`git clone https://github.com/pabloibargon/distribuidos.git`
+Además, aprenderás a utilizar un **logger** para rastrear el flujo de eventos en una aplicación concurrente y a realizar pruebas automatizadas con **JUnit** para verificar el correcto funcionamiento del sistema.
 
-2. Habiendo instalado maven (podemos comprobarlo con `mvn --version`)
-Se compila y empaqueta:
+## Objetivos
 
-`mvn package`
+- Implementar y manejar hilos en Java para realizar tareas asíncronas.
+- Utilizar un sistema de **prioridades** para gestionar la asignación de tareas (llamadas) entre diferentes empleados.
+- Utilizar el **logging** para rastrear eventos concurrentes.
+- Realizar **pruebas automatizadas** para validar que los hilos se comportan como se espera en un entorno multihilo.
+  
+## Clases principales
 
-3. Se han generado `.class` y `.jar` en un nuevo directorio `target`. Podemos ejecutar ambos ejemplos especificando la clase principal.
-(No hay ninguna que se llame Main, entonces intentando ejecutar directamente el `.jar` nos dará error.)
+### 1. **Empleado**
+Esta clase representa a un empleado que atiende llamadas. Cada empleado tiene:
+- Un nombre.
+- Un nivel de prioridad (empleados con menor número de prioridad tienen preferencia para atender llamadas).
+  
+Un empleado atiende las llamadas mediante el método `atenderLlamada(Llamada llamada)`, el cual es simulado con un `sleep()` para representar el tiempo de duración de la llamada.
 
-`java -cp target/ejemplos-hilos*.jar es.uva.hilos.Ejemplo1`
+**Logger**: Durante la ejecución, el logger registrará eventos como:
+- "Empleado está atendiendo la llamada ..."
+- "Empleado atendió la llamada {id}"
 
-Se mostrará en consola algo similar a
+### 2. **Llamada**
+Esta clase representa una llamada telefónica que llega a la centralita. Contiene dos atributos:
+- `duracion`: el tiempo que la llamada durará (en segundos).
+- `id`: un identificador único para la llamada, usado para los logs.
 
+### 3. **Centralita**
+La centralita es la encargada de recibir las llamadas y asignarlas a los empleados disponibles según la prioridad. Debes implementar el método:
+- `atenderLlamada(Llamada llamada)`: Este método seleccionará al empleado disponible de mayor prioridad y le asignará la llamada. El proceso debe ser **asíncrono** usando hilos.
+
+### 4. **Logger**
+El ejercicio utiliza la biblioteca SLF4J para el logging. Los logs son útiles para hacer un seguimiento de los eventos en un entorno multihilo. Los mensajes que se logean son:
+- Cuando un empleado comienza a atender una llamada.
+- Cuando un empleado termina de atender la llamada.
+
+## Pruebas Unitarias
+
+Se han proporcionado pruebas automatizadas utilizando **JUnit** para verificar el comportamiento de las clases. Las pruebas comprueban:
+- Que los empleados atienden correctamente las llamadas.
+- Que las llamadas se asignan a los empleados según su prioridad.
+- Que el sistema maneja correctamente llamadas concurrentes.
+
+En las pruebas, se verifica que los **logs** se generan correctamente. Dado que el sistema es concurrente, **el orden de los logs no es importante**, pero los mensajes correctos deben estar presentes.
+
+### Ejemplo de prueba:
+```java
+@Test
+public void testLlamadasMultiplesSimultaneas() throws InterruptedException {
+    Empleado e1 = new Empleado(0, "Alberto");
+    Empleado e2 = new Empleado(1, "Carlos");
+    centralita.conEmpleado(e1);
+    centralita.conEmpleado(e2);
+
+    centralita.atenderLlamada(new Llamada(2, 103)); // Asignado a Alberto
+    centralita.atenderLlamada(new Llamada(2, 104)); // Asignado a Carlos
+
+    TimeUnit.SECONDS.sleep(3); // Esperamos a que ambas llamadas se completen
+
+    List<LoggingEvent> events = testLogger.getLoggingEvents();
+    assertEquals(4, events.size());
+
+    assertTrue(events.stream().anyMatch(event -> event.getMessage().equals("Alberto está atendiendo la llamada ...")));
+    assertTrue(events.stream().anyMatch(event -> event.getMessage().equals("Alberto atendió la llamada 103")));
+    assertTrue(events.stream().anyMatch(event -> event.getMessage().equals("Carlos está atendiendo la llamada ...")));
+    assertTrue(events.stream().anyMatch(event -> event.getMessage().equals("Carlos atendió la llamada 104")));
+}
 ```
-Termina thread main
-0 Pepe
-1 Pepe
-2 Pepe
-3 Pepe
-4 Pepe
-5 Pepe
-6 Pepe
-7 Pepe
-8 Pepe
-9 Pepe
-0 Juan
-1 Juan
-2 Juan
-3 Juan
-4 Juan
-5 Juan
-6 Juan
-7 Juan
-8 Juan
-9 Juan
-Termina thread Juan
-Termina thread Pepe
-```
 
-Para ejecutar el siguiente ejemplo
-
-`java -cp target/ejemplos-hilos*.jar es.uva.hilos.MainConsumidorProductor`
-
-```
-Productor. put: 0
-Consumidor. get: 0
-Productor. put: 1
-Consumidor. get: 1
-Productor. put: 2
-Consumidor. get: 2
-Productor. put: 3
-Consumidor. get: 3
-Productor. put: 4
-Consumidor. get: 4
-Productor. put: 5
-Consumidor. get: 5
-Productor. put: 6
-Consumidor. get: 6
-Productor. put: 7
-Consumidor. get: 7
-Productor. put: 8
-Consumidor. get: 8
-Productor. put: 9
-Consumidor. get: 9
-```
