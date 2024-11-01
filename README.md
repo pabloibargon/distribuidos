@@ -4,6 +4,8 @@ Repositorio de la asignatura de sistemas distribuidos.
 
 ## Indice
 
+Los subdirectorios son proyectos de maven, puede que para alguna funcionalidad de los IDE necesitéis abir estos subdirectios como proyecto.
+
 ### Hilos
 
 - Ejemplos de hilos [hilos/ejemplos](hilos/ejemplos/readme.md)
