@@ -9,7 +9,7 @@ public class Centralita {
 	// TODO: Harán falta más atriubutos ...
 	private final ArrayList<Empleado> empleados = new ArrayList<>();
 	
-	public conEmpleado(Empleado e) {
+	public void conEmpleado(Empleado e) {
 		empleados.add(e);
 	}
 
