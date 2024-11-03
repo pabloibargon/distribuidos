@@ -1,5 +1,11 @@
 package es.uva.sockets;
 
+import java.net.Socket;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ServidorJuego {
     // El juego consiste en encontrar un tesoro
     // en un mapa cuadriculado, cuando un jugador
@@ -20,23 +26,36 @@ public class ServidorJuego {
     // El delimitador de lo que constituye un mensaje es
     // un caracter de salto de linea
 
-    private final Estado estado;
-    // TODO atributos para gestionar las conexiones
+    public final Estado estado;
+    public final ServerSocket serverSocket;
+    private final List<ManagerCliente> clientes;
 
-    public ServidorJuego(int size){
+    public ServidorJuego(int size) throws IOException {
         estado = new Estado(size);
-    }
-    public void iniciar(int puerto) {
-        //TODO: Crear un serverSocket que acepte
-        //conexiones de VARIOS clientes
-        // Mantener todos los procesos necesarios hasta el final
-        // de la partida (alguien encuentra el tesoro)
+        clientes = new ArrayList<>();
+        // Crear un serverSocket que acepte
+        // conexiones de VARIOS clientes
+        serverSocket = new ServerSocket(puerto);
     }
 
-    public void interpretarMensaje(String mensaje){
-        // TODO: Esta función debe realizar distintas
-        // Acciones según el mensaje recibido
-        // Si el mensaje recibido no tiene el formato correcto
-        // No ocurre nada
+    public void iniciar() throws IOException {
+        while (!estado.estaTerminado()) {
+            ManagerCliente nuevo = aceptarConexion();
+            clientes.add(nuevo);
+            nuevo.start();
+        }
+
     }
+
+    public ManagerCliente aceptarConexion() throws IOException{
+        // TODO: Usando el serverSocket
+        // Al añadir un nuevo jugador se le deben enviar
+        // la posicion de los jugadores existentes, aunque no
+        // sabe donde han estado buscando.
+    }
+
+    public synchronized void broadcast(String message) {
+        // TODO: Enviar un mensaje a todos los clientes
+    }
+
 }
