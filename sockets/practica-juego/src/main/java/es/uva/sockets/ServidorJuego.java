@@ -30,7 +30,7 @@ public class ServidorJuego {
     public final ServerSocket serverSocket;
     private final List<ManagerCliente> clientes;
 
-    public ServidorJuego(int size) throws IOException {
+    public ServidorJuego(int size, int puerto) throws IOException {
         estado = new Estado(size);
         clientes = new ArrayList<>();
         // Crear un serverSocket que acepte
