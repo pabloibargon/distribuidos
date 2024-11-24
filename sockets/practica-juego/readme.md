@@ -87,3 +87,4 @@ y podemos tener una interfaz tal que asi.
 
 - Usar logging.
 - Extender el juego con algun otro 'comando'
+- **Serialización**: Implementar la comunicación entre cliente y servidor usando serialización y `ObjectInputStream` / `ObjectOutputStream`. Hay varias opciones para hacer esto, una de ellas es crear una clase serializable Mensaje con distintas subclases según el tipo del mensaje. Eso sí, uno de los atributos no pueden ser los mensajes en texto plano que ya se utilizaban (si no esto no nos aporta nada).
